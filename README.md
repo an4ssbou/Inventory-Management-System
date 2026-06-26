@@ -157,3 +157,44 @@ npm audit
 - Deploy `client/dist` after running `npm run build`.
 - Configure production environment variables in the hosting provider.
 - Make sure CORS allows only the production front-end URL.
+
+
+## Free Deployment
+
+Recommended free-friendly setup:
+
+- Front-end: Vercel or Netlify
+- Back-end API: Render Web Service
+- Database: MongoDB Atlas free cluster
+
+### Back-end on Render
+
+1. Create a new Render Web Service from this GitHub repository.
+2. Use `server` as the root directory, or use the included `render.yaml` blueprint.
+3. Set the environment variables from `server/.env.example`.
+4. Use a MongoDB Atlas connection string for `MONGO`; local MongoDB will not work online.
+5. Set `CLIENT_ORIGIN` to the deployed front-end URL, for example:
+
+```env
+CLIENT_ORIGIN=https://your-frontend-domain.vercel.app
+```
+
+### Front-end on Vercel
+
+1. Import the GitHub repository in Vercel.
+2. Set the root directory to `client`.
+3. Build command: `npm run build`.
+4. Output directory: `dist`.
+5. Add this environment variable:
+
+```env
+VITE_API_BASE_URL=https://your-render-api.onrender.com
+```
+
+### Front-end on Netlify
+
+1. Import the GitHub repository in Netlify.
+2. Set the base directory to `client`.
+3. Build command: `npm run build`.
+4. Publish directory: `client/dist` or `dist` if the base directory is already `client`.
+5. Add `VITE_API_BASE_URL` with the deployed API URL.

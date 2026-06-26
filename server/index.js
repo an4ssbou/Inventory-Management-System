@@ -62,6 +62,10 @@ const loginLimiter = rateLimit({
   message: { message: 'Too many login attempts. Please try again later.' },
 });
 
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
 app.use('/api/login', loginLimiter);
 app.use('/api', userRoutes);
 app.use('/api', materialRoutes);
