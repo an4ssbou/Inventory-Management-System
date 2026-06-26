@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom'
+import { API_BASE_URL } from '../utils/api';
 
 const AddUser = ({ user = null, onUserChange }) => {
     const navigate = useNavigate();
@@ -68,13 +69,13 @@ const AddUser = ({ user = null, onUserChange }) => {
         
         try {
             if (user) {
-                await axios.put(`http://localhost:4000/api/user/${user._id}`, userData,{
+                await axios.put(`${API_BASE_URL}/api/user/${user._id}`, userData,{
                     headers: {
                       Authorization: `Bearer ${token}`
                     }
                   });
             } else {
-                await axios.post("http://localhost:4000/api/user", userData,{
+                await axios.post(`${API_BASE_URL}/api/user`, userData,{
                     headers: {
                       Authorization: `Bearer ${token}`
                     }

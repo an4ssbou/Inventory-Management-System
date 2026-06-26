@@ -10,6 +10,7 @@ import {useNavigate} from 'react-router-dom'
 import SessionExpired from './SessionExpired';
 import Loading from './Loading';
 import { ToastContainer, toast } from 'react-toastify';
+import { API_BASE_URL } from '../utils/api';
 
 
 const Loan = () => {
@@ -25,7 +26,7 @@ const Loan = () => {
 
   const getLoans = async() => {
     try {
-      const res = await axios.get(search !== '' ? ` http://localhost:4000/api/requests?status=Validée&matériel=${search}`: "http://localhost:4000/api/requests?status=Validée",{
+      const res = await axios.get(search !== '' ? `${API_BASE_URL}/api/requests?status=Validée&matériel=${search}`: `${API_BASE_URL}/api/requests?status=Validée`,{
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -68,7 +69,7 @@ const Loan = () => {
     try {
       await Promise.all(
         checkedLoans.map(async (loan) => {
-          await axios.delete(`http://localhost:4000/api/request/${loan._id}`,
+          await axios.delete(`${API_BASE_URL}/api/request/${loan._id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`
@@ -177,7 +178,7 @@ const Loan = () => {
               <Table.Cell>
                 <a onClick={async () =>{
                      try {
-                      await axios.delete(`http://localhost:4000/api/request/${loan._id}`,{
+                      await axios.delete(`${API_BASE_URL}/api/request/${loan._id}`,{
                         headers: {
                           Authorization: `Bearer ${token}`
                         }

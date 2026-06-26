@@ -8,6 +8,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import {useNavigate} from 'react-router-dom'
 import SessionExpired from './SessionExpired';
 import Loading from './Loading';
+import { API_BASE_URL } from '../utils/api';
 
 
 const Material = () => {
@@ -23,7 +24,7 @@ const Material = () => {
 
   const getMaterial = async() => {
     try {
-      const res = await axios.get(search !== '' ? `http://localhost:4000/api/material?designation=${search}` : "http://localhost:4000/api/material",{
+      const res = await axios.get(search !== '' ? `${API_BASE_URL}/api/material?designation=${search}` : `${API_BASE_URL}/api/material`,{
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -66,7 +67,7 @@ const Material = () => {
     try {
       await Promise.all(
         checkedMaterial.map(async (material) => {
-          await axios.delete(`http://localhost:4000/api/material/${material._id}`,{
+          await axios.delete(`${API_BASE_URL}/api/material/${material._id}`,{
             headers: {
               Authorization: `Bearer ${token}`
             }
@@ -186,7 +187,7 @@ const Material = () => {
               <Table.Cell>
                 <a onClick={async () =>{
                      try {
-                      await axios.delete(`http://localhost:4000/api/material/${mat._id}`,{
+                      await axios.delete(`${API_BASE_URL}/api/material/${mat._id}`,{
                         headers: {
                           Authorization: `Bearer ${token}`
                         }

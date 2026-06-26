@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../utils/api';
 
 const MaterialMng = ({ mat = null, onMaterialChange }) => {
     const navigate = useNavigate();
@@ -57,14 +58,14 @@ const MaterialMng = ({ mat = null, onMaterialChange }) => {
 
         try {
             if (mat) {
-                await axios.put(`http://localhost:4000/api/material/${mat._id}`, formData, {
+                await axios.put(`${API_BASE_URL}/api/material/${mat._id}`, formData, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         'Content-Type': 'multipart/form-data'
                     }
                 });
             } else {
-                await axios.post("http://localhost:4000/api/material", formData, {
+                await axios.post(`${API_BASE_URL}/api/material`, formData, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         'Content-Type': 'multipart/form-data'

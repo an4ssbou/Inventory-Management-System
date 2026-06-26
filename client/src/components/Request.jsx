@@ -14,6 +14,7 @@ import {useNavigate} from 'react-router-dom'
 import SessionExpired from './SessionExpired';
 import ExportRequestsButton from './ExportRequestsButton';
 import Loading from './Loading';
+import { API_BASE_URL } from '../utils/api';
 
 
 
@@ -30,7 +31,7 @@ const Request = () => {
 
   const getRequests = async() => {
     try {
-      const res = await axios.get(search === '' ? "http://localhost:4000/api/requests" : `http://localhost:4000/api/requests?matériel=${search}`, {
+      const res = await axios.get(search === '' ? `${API_BASE_URL}/api/requests` : `${API_BASE_URL}/api/requests?matériel=${search}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -86,7 +87,7 @@ const Request = () => {
 
   const validateRequest = async(request) => {
     try {
-      await axios.put(`http://localhost:4000/api/request/${request._id}`, { status: "Validée" }, {
+      await axios.put(`${API_BASE_URL}/api/request/${request._id}`, { status: "Validée" }, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -111,7 +112,7 @@ const Request = () => {
 
 const rejectRequest = async(request) => {
   try {
-      await axios.put(`http://localhost:4000/api/request/${request._id}`, { status: "Refusée" }, {
+      await axios.put(`${API_BASE_URL}/api/request/${request._id}`, { status: "Refusée" }, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -153,7 +154,7 @@ const rejectRequest = async(request) => {
 
   const handleDeleteAll = async() =>{
     try {
-        await axios.delete(`http://localhost:4000/api/requests/`,{
+        await axios.delete(`${API_BASE_URL}/api/requests/`,{
             headers: {
               Authorization: `Bearer ${token}`
             }
@@ -174,7 +175,7 @@ const rejectRequest = async(request) => {
     try {
       await Promise.all(
         checkedRequests.map(async (request) => {
-          await axios.delete(`http://localhost:4000/api/request/${request._id}`,{
+          await axios.delete(`${API_BASE_URL}/api/request/${request._id}`,{
             headers: {
               Authorization: `Bearer ${token}`
             }
@@ -315,7 +316,7 @@ const rejectRequest = async(request) => {
               <Table.Cell>
                 <a onClick={async () =>{
                      try {
-                      await axios.delete(`http://localhost:4000/api/request/${request._id}`,{
+                      await axios.delete(`${API_BASE_URL}/api/request/${request._id}`,{
                         headers: {
                           Authorization: `Bearer ${token}`
                         }

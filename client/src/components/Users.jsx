@@ -8,6 +8,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import SessionExpired from './SessionExpired';
 import {useNavigate} from 'react-router-dom'
 import Loading from './Loading';
+import { API_BASE_URL } from '../utils/api';
 
 
 const User = () => {
@@ -23,7 +24,7 @@ const User = () => {
 
   const getUsers = async() => {
     try {
-      const res = await axios.get(search !== '' ? `http://localhost:4000/api/users?nom=${search}` : "http://localhost:4000/api/users",{
+      const res = await axios.get(search !== '' ? `${API_BASE_URL}/api/users?nom=${search}` : `${API_BASE_URL}/api/users`,{
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -66,7 +67,7 @@ const User = () => {
     try {
       await Promise.all(
         checkedUsers.map(async (user) => {
-          await axios.delete(`http://localhost:4000/api/user/${user._id}`,{
+          await axios.delete(`${API_BASE_URL}/api/user/${user._id}`,{
             headers: {
               Authorization: `Bearer ${token}`
             }
@@ -187,7 +188,7 @@ const User = () => {
               <Table.Cell>
                 <a onClick={async () =>{
                      try {
-                      await axios.delete(`http://localhost:4000/api/user/${user._id}`,{
+                      await axios.delete(`${API_BASE_URL}/api/user/${user._id}`,{
                         headers: {
                           Authorization: `Bearer ${token}`
                         }

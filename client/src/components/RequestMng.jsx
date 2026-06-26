@@ -3,6 +3,7 @@ import axios from 'axios';
 import moment from 'moment';
 import { ToastContainer, toast } from 'react-toastify';
 import {useNavigate} from 'react-router-dom'
+import { API_BASE_URL } from '../utils/api';
 
 const RequestMng = ({ request = null, onRequestChange,mat=null }) => {
     const navigate = useNavigate();
@@ -17,7 +18,7 @@ const RequestMng = ({ request = null, onRequestChange,mat=null }) => {
 
     const getUsers = async () => {
         try {
-            const res = await axios.get("http://localhost:4000/api/users",{
+            const res = await axios.get(`${API_BASE_URL}/api/users`,{
                 headers: {
                   Authorization: `Bearer ${token}`
                 }
@@ -37,7 +38,7 @@ const RequestMng = ({ request = null, onRequestChange,mat=null }) => {
 
     const getMaterials = async () => {
         try {
-            const res = await axios.get("http://localhost:4000/api/material?status=Disponible",{
+            const res = await axios.get(`${API_BASE_URL}/api/material?status=Disponible`,{
                 headers: {
                   Authorization: `Bearer ${token}`
                 }
@@ -118,7 +119,7 @@ const RequestMng = ({ request = null, onRequestChange,mat=null }) => {
 
         try {
             if (request) {
-                await axios.put(`http://localhost:4000/api/request/${request._id}`, requestData,{
+                await axios.put(`${API_BASE_URL}/api/request/${request._id}`, requestData,{
                     headers: {
                       Authorization: `Bearer ${token}`
                     }
@@ -134,7 +135,7 @@ const RequestMng = ({ request = null, onRequestChange,mat=null }) => {
                     theme: "light",
                     });
             } else {
-                await axios.post("http://localhost:4000/api/request", requestData,{
+                await axios.post(`${API_BASE_URL}/api/request`, requestData,{
                     headers: {
                       Authorization: `Bearer ${token}`
                     }

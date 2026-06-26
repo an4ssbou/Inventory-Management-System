@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom'
 import moment from 'moment';
+import { API_BASE_URL } from '../utils/api';
 
 const LoanMng = ({ loan = null, onLoanChange }) => {
     const navigate = useNavigate();
@@ -16,7 +17,7 @@ const LoanMng = ({ loan = null, onLoanChange }) => {
 
     const getUsers = async () => {
         try {
-            const res = await axios.get("http://localhost:4000/api/users",{
+            const res = await axios.get(`${API_BASE_URL}/api/users`,{
                 headers: {
                   Authorization: `Bearer ${token}`
                 }
@@ -35,7 +36,7 @@ const LoanMng = ({ loan = null, onLoanChange }) => {
 
     const getMaterials = async () => {
         try {
-            const res = await axios.get("http://localhost:4000/api/material?status=Disponible",{
+            const res = await axios.get(`${API_BASE_URL}/api/material?status=Disponible`,{
                 headers: {
                   Authorization: `Bearer ${token}`
                 }
@@ -116,13 +117,13 @@ const LoanMng = ({ loan = null, onLoanChange }) => {
 
         try {
             if (loan) {
-                await axios.put(`http://localhost:4000/api/request/${loan._id}`, requestData,{
+                await axios.put(`${API_BASE_URL}/api/request/${loan._id}`, requestData,{
                     headers: {
                       Authorization: `Bearer ${token}`
                     }
                   });
             } else {
-                await axios.post("http://localhost:4000/api/request", requestData,{
+                await axios.post(`${API_BASE_URL}/api/request`, requestData,{
                     headers: {
                       Authorization: `Bearer ${token}`
                     }
