@@ -1,0 +1,155 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+    --ink: #17202a;
+    --muted: #64748b;
+    --line: #d9e2ec;
+    --brand: #0f766e;
+    --brand-strong: #134e4a;
+    --accent: #3657d6;
+    --paper: #f7fafc;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    background:
+      linear-gradient(180deg, rgba(239, 246, 255, 0.82), rgba(247, 250, 252, 0.95) 340px),
+      var(--paper);
+    color: var(--ink);
+    font-family: Avenir Next, Aptos, Segoe UI, ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: 0;
+  }
+
+  button, input, select, textarea {
+    font: inherit;
+  }
+
+  a {
+    color: inherit;
+  }
+}
+
+@layer components {
+  .page-shell {
+    min-height: calc(100vh - 68px);
+    background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(248,250,252,0.96));
+  }
+
+  .surface {
+    border: 1px solid rgba(148, 163, 184, 0.28);
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: 0 18px 60px rgba(15, 23, 42, 0.08);
+    backdrop-filter: blur(16px);
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 0.5rem;
+    background: #0f766e;
+    color: white;
+    font-weight: 700;
+    padding: 0.72rem 1rem;
+    transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
+    box-shadow: 0 10px 22px rgba(15, 118, 110, 0.22);
+  }
+
+  .btn-primary:hover {
+    background: #115e59;
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(100, 116, 139, 0.3);
+    background: white;
+    color: #17202a;
+    font-weight: 700;
+    padding: 0.72rem 1rem;
+    transition: border-color 160ms ease, transform 160ms ease;
+  }
+
+  .btn-secondary:hover {
+    border-color: #0f766e;
+    transform: translateY(-1px);
+  }
+
+  .field-control {
+    width: 100%;
+    border-radius: 0.5rem;
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
+    padding: 0.78rem 0.9rem;
+    color: #17202a;
+    outline: none;
+    transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+  }
+
+  .field-control:focus {
+    border-color: #0f766e;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.12);
+  }
+
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 0.25rem 0.62rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+  }
+
+  .dashboard-card {
+    border-radius: 0.5rem;
+    border: 1px solid rgba(148, 163, 184, 0.26);
+    background: white;
+    box-shadow: 0 14px 40px rgba(15, 23, 42, 0.07);
+  }
+
+  .admin-table-shell {
+    overflow-x: auto;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(148, 163, 184, 0.24);
+    background: white;
+  }
+
+  .admin-table {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  .admin-table th {
+    background: #f8fafc;
+    color: #475569;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-align: left;
+    text-transform: uppercase;
+  }
+
+  .admin-table th,
+  .admin-table td {
+    border-bottom: 1px solid rgba(226, 232, 240, 0.86);
+    padding: 0.9rem 1rem;
+    vertical-align: middle;
+  }
+}
