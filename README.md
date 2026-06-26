@@ -72,6 +72,7 @@ MAX_UPLOAD_SIZE=2097152
 ALLOW_PUBLIC_SIGNUP=false
 EMAIL=your-email@gmail.com
 EMAIL_APP_PASSWORD=your-gmail-app-password
+BOOTSTRAP_ADMIN_TOKEN=replace_with_a_temporary_strong_token
 CLIENT_ID=
 CLIENT_SECRET=
 REFRESH_TOKEN=
@@ -198,3 +199,17 @@ VITE_API_BASE_URL=https://your-render-api.onrender.com
 3. Build command: `npm run build`.
 4. Publish directory: `client/dist` or `dist` if the base directory is already `client`.
 5. Add `VITE_API_BASE_URL` with the deployed API URL.
+
+
+## Create the First Production Admin
+
+If the production database is empty, create the first admin with the temporary bootstrap endpoint. Set `BOOTSTRAP_ADMIN_TOKEN` in the API environment first, then call:
+
+```bash
+curl -X POST https://your-api-url.onrender.com/api/bootstrap-admin \
+  -H "Content-Type: application/json" \
+  -H "x-bootstrap-token: YOUR_BOOTSTRAP_ADMIN_TOKEN" \
+  -d '{"nom":"Admin","prénom":"Production","email":"admin@example.com","password":"Admin12345","Phone":"0600000000"}'
+```
+
+After the admin is created, remove `BOOTSTRAP_ADMIN_TOKEN` from the production environment and redeploy. The endpoint also refuses to create another admin if one already exists.
