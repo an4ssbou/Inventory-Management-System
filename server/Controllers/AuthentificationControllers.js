@@ -25,7 +25,7 @@ const SignUp = async (req, res) => {
     const safeUser = await User.findById(user._id).select('-password');
     return res.status(201).json({ user: safeUser });
   } catch (error) {
-    return res.status(400).json({ message: error.message });
+    return res.status(400).json({ message: (process.env.NODE_ENV === 'production' ? 'Données invalides ou opération indisponible' : error.message) });
   }
 };
 
@@ -51,7 +51,7 @@ const BootstrapAdmin = async (req, res) => {
 
     return res.status(201).json({ user: safeUser });
   } catch (error) {
-    return res.status(400).json({ message: error.message });
+    return res.status(400).json({ message: (process.env.NODE_ENV === 'production' ? 'Données invalides ou opération indisponible' : error.message) });
   }
 };
 

@@ -1,6 +1,6 @@
 require('dotenv').config();
-const nodemailer = require('nodemailer');
-const { google } = require('googleapis');
+const nodemailer = process.env.DEMO_MODE === 'true' ? null : require('nodemailer');
+const { google } = process.env.DEMO_MODE === 'true' ? {} : require('googleapis');
 
 const createOAuthTransporter = async () => {
   const oauth2Client = new google.auth.OAuth2(
@@ -53,6 +53,7 @@ const createTransporter = async () => {
 };
 
 const sendEmail = async (emailOptions) => {
+  if (process.env.DEMO_MODE === 'true') return;
   try {
     const emailTransporter = await createTransporter();
     await emailTransporter.sendMail(emailOptions);

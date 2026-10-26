@@ -16,6 +16,9 @@ const createRequest = async (req, res) => {
       return res.status(404).json({ message: 'Material not found' });
     }
 
+    if (process.env.DEMO_MODE === 'true' && (material.status !== 'Disponible' || data.prise < new Date(new Date().setUTCHours(0,0,0,0)) || (data.retour && data.retour <= data.prise))) {
+      return res.status(400).json({message:'Matériel indisponible ou dates invalides.'});
+    }
     const request = await Request.create({
       utilisateur: req.user.id,
       matériel: data.matériel,
@@ -26,7 +29,7 @@ const createRequest = async (req, res) => {
 
     return res.status(201).json({ request });
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    return res.status(400).json({ error: (process.env.NODE_ENV === 'production' ? 'Données invalides ou opération indisponible' : error.message) });
   }
 };
 
@@ -35,7 +38,7 @@ const deleteAllRequests = async (req, res) => {
     const requests = await Request.deleteMany({});
     return res.json({ message: `Deleted ${requests.deletedCount} documents.` });
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    return res.status(400).json({ error: (process.env.NODE_ENV === 'production' ? 'Données invalides ou opération indisponible' : error.message) });
   }
 };
 
@@ -56,7 +59,7 @@ const deleteRequest = async (req, res) => {
 
     return res.json({ message: 'Request deleted successfully' });
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    return res.status(400).json({ error: (process.env.NODE_ENV === 'production' ? 'Données invalides ou opération indisponible' : error.message) });
   }
 };
 
@@ -88,6 +91,12 @@ const editRequest = async (req, res) => {
     }
 
     const data = validate(requestUpdateSchema, req.body);
+    if (process.env.DEMO_MODE === 'true') {
+      const pending = await Request.findById(req.params.id).populate('matériel');
+      if (!pending) return res.status(404).json({message:'Request not found'});
+      if (pending.status !== 'En Attente') return res.status(409).json({message:'Cette demande a déjà été traitée.'});
+      if (data.status === 'Validée' && pending.matériel?.status !== 'Disponible') return res.status(409).json({message:'Matériel déjà attribué.'});
+    }
     const request = await Request.findByIdAndUpdate(req.params.id, data, {
       new: true,
       runValidators: true,
@@ -105,7 +114,7 @@ const editRequest = async (req, res) => {
       }
     }
 
-    if (data.status === 'Refusée' && request.matériel) {
+    if (process.env.DEMO_MODE !== 'true' && data.status === 'Refusée' && request.matériel) {
       const material = await Material.findById(request.matériel);
       if (material && material.status !== 'Disponible') {
         material.status = 'Disponible';
@@ -119,7 +128,7 @@ const editRequest = async (req, res) => {
 
     return res.json({ request });
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    return res.status(400).json({ error: (process.env.NODE_ENV === 'production' ? 'Données invalides ou opération indisponible' : error.message) });
   }
 };
 
@@ -142,7 +151,7 @@ const getUserRequests = async (req, res) => {
     const requests = await Request.find(query).populate('matériel');
     return res.json({ requests });
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    return res.status(400).json({ error: (process.env.NODE_ENV === 'production' ? 'Données invalides ou opération indisponible' : error.message) });
   }
 };
 
@@ -152,8 +161,11 @@ const getRequests = async (req, res) => {
     const status = validate(searchSchema, req.query.status);
     const matériel = validate(searchSchema, req.query.matériel);
     const filter = {};
+    const requester = await User.findById(req.user.id).select('Role');
+    if (!requester) return res.status(403).json({message:'Forbidden'});
+    if (requester.Role !== 'Admin') filter.utilisateur = req.user.id;
 
-    if (nom) {
+    if (nom && requester.Role === 'Admin') {
       const users = await User.find({ nom: { $regex: escapeRegex(nom), $options: 'i' } }).select('_id');
       filter.utilisateur = { $in: users.map((user) => user._id) };
     }
@@ -172,7 +184,7 @@ const getRequests = async (req, res) => {
 
     return res.json({ requests });
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    return res.status(400).json({ error: (process.env.NODE_ENV === 'production' ? 'Données invalides ou opération indisponible' : error.message) });
   }
 };
 
@@ -201,7 +213,7 @@ const exportRequests = async (req, res) => {
     res.setHeader('Content-Type', 'text/csv; charset=utf-8');
     return res.send(`\uFEFF${csv}`);
   } catch (error) {
-    console.error('Error exporting requests to CSV:', error);
+    if (process.env.NODE_ENV !== 'production') console.error('CSV export failed');
     return res.status(500).send('Server error');
   }
 };

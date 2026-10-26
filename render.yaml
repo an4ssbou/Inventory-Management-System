@@ -1,34 +1,23 @@
 services:
   - type: web
-    name: inventory-management-api
-    env: node
+    name: inventory-portfolio-demo
+    runtime: node
     plan: free
-    rootDir: server
-    buildCommand: npm install
-    startCommand: npm start
+    branch: portfolio-demo
+    autoDeployTrigger: "off"
+    buildCommand: npm ci --prefix server && npm ci --prefix client && npm run build --prefix client
+    startCommand: node server/start-demo.js
     healthCheckPath: /api/health
     envVars:
+      - key: NODE_VERSION
+        value: "22"
       - key: NODE_ENV
         value: production
-      - key: PORT
-        value: 4000
-      - key: MONGO
-        sync: false
+      - key: DEMO_MODE
+        value: "true"
+      - key: VITE_DEMO_MODE
+        value: "true"
       - key: JWT_SECRET
-        sync: false
-      - key: JWT_EXPIRES_IN
-        value: 3h
-      - key: CLIENT_ORIGIN
-        sync: false
-      - key: JSON_BODY_LIMIT
-        value: 1mb
-      - key: LOGIN_RATE_LIMIT
-        value: 20
-      - key: MAX_UPLOAD_SIZE
-        value: 2097152
-      - key: ALLOW_PUBLIC_SIGNUP
-        value: false
-      - key: EMAIL
-        sync: false
-      - key: EMAIL_APP_PASSWORD
+        generateValue: true
+      - key: MONGO
         sync: false

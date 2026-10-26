@@ -17,7 +17,7 @@ const CreateUser = async (req, res) => {
     const safeUser = await User.findById(user._id).select('-password');
     return res.status(201).json({ user: safeUser });
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    return res.status(400).json({ error: (process.env.NODE_ENV === 'production' ? 'Données invalides ou opération indisponible' : error.message) });
   }
 };
 
@@ -39,7 +39,7 @@ const EditUser = async (req, res) => {
 
     return res.json({ user });
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    return res.status(400).json({ error: (process.env.NODE_ENV === 'production' ? 'Données invalides ou opération indisponible' : error.message) });
   }
 };
 
@@ -57,7 +57,7 @@ const DeleteUser = async (req, res) => {
     await Request.deleteMany({ utilisateur: req.params.id });
     return res.json({ message: 'User deleted successfully' });
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    return res.status(400).json({ error: (process.env.NODE_ENV === 'production' ? 'Données invalides ou opération indisponible' : error.message) });
   }
 };
 
@@ -80,7 +80,7 @@ const GetUser = async (req, res) => {
 
     return res.json({ user });
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    return res.status(400).json({ error: (process.env.NODE_ENV === 'production' ? 'Données invalides ou opération indisponible' : error.message) });
   }
 };
 
@@ -96,7 +96,7 @@ const GetUsers = async (req, res) => {
     const users = await User.find(filter).select('-password');
     return res.json({ users });
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    return res.status(400).json({ error: (process.env.NODE_ENV === 'production' ? 'Données invalides ou opération indisponible' : error.message) });
   }
 };
 

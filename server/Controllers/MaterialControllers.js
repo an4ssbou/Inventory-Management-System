@@ -12,7 +12,7 @@ const CreateMaterial = async (req, res) => {
     const mat = await Material.create({ ...data, imageUrl });
     return res.status(201).json({ mat });
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    return res.status(400).json({ error: (process.env.NODE_ENV === 'production' ? 'Données invalides ou opération indisponible' : error.message) });
   }
 };
 
@@ -30,7 +30,7 @@ const DeleteMaterial = async (req, res) => {
     await Request.deleteMany({ matériel: req.params.id });
     return res.json({ message: 'Material deleted successfully' });
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    return res.status(400).json({ error: (process.env.NODE_ENV === 'production' ? 'Données invalides ou opération indisponible' : error.message) });
   }
 };
 
@@ -54,7 +54,7 @@ const EditMaterial = async (req, res) => {
 
     return res.json({ mat });
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    return res.status(400).json({ error: (process.env.NODE_ENV === 'production' ? 'Données invalides ou opération indisponible' : error.message) });
   }
 };
 
@@ -72,7 +72,7 @@ const GetMaterials = async (req, res) => {
     const mats = await Material.find(query);
     return res.json({ mats });
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    return res.status(400).json({ error: (process.env.NODE_ENV === 'production' ? 'Données invalides ou opération indisponible' : error.message) });
   }
 };
 

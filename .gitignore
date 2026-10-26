@@ -39,3 +39,10 @@ lerna-debug.log*
 
 # Uploads and local runtime data
 server/uploads/
+
+.env
+.env.*
+!.env.example
+server/uploads/
+client/dist/
+**/node_modules/
